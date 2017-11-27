@@ -1,7 +1,6 @@
 package com.nannoq.tools.fcm.server.control;
 
 import com.nannoq.tools.fcm.server.GcmServer;
-import com.nannoq.tools.fcm.server.MessageSender;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;

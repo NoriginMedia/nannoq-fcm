@@ -20,9 +20,7 @@ import java.util.function.Consumer;
 import static com.nannoq.tools.fcm.server.XMPPPacketListener.*;
 import static com.nannoq.tools.fcm.server.data.DataMessageHandler.REGISTER_DEVICE;
 import static com.nannoq.tools.fcm.server.data.DataMessageHandler.UPDATE_ID;
-import static com.nannoq.tools.fcm.server.messageutils.MessageUtils.DELAY_WHILE_IDLE;
-import static com.nannoq.tools.fcm.server.messageutils.MessageUtils.TIME_TO_LIVE;
-import static com.nannoq.tools.fcm.server.messageutils.MessageUtils.createJsonMessage;
+import static com.nannoq.tools.fcm.server.messageutils.MessageUtils.*;
 /**
  * This class handles all sending functionality for the GCM server.
  *
