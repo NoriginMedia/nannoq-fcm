@@ -14,7 +14,8 @@
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>A collection of classes for managing JWT signing and verification on Vert.x</description>
+    <description>A collection of classes for managing connections and interactions with
+        Firebase Cloud Messaging on Vert.x</description>
     <url>https://github.com/AspiroTV/nannoq-fcm</url>
 
     <licenses>
