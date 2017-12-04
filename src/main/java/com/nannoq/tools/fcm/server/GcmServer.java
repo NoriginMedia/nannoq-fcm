@@ -29,7 +29,7 @@ import com.nannoq.tools.fcm.server.data.DataMessageHandler;
 import com.nannoq.tools.fcm.server.data.RegistrationService;
 import com.nannoq.tools.fcm.server.messageutils.FcmNotification;
 import com.nannoq.tools.fcm.server.messageutils.GcmPacketExtension;
-import com.nannoq.tools.repository.repository.RedisUtils;
+import com.nannoq.tools.repository.repository.redis.RedisUtils;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;

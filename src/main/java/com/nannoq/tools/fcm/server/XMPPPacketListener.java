@@ -33,7 +33,7 @@ import com.nannoq.tools.fcm.server.data.FcmDevice;
 import com.nannoq.tools.fcm.server.data.RegistrationService;
 import com.nannoq.tools.fcm.server.messageutils.CcsMessage;
 import com.nannoq.tools.fcm.server.messageutils.GcmPacketExtension;
-import com.nannoq.tools.repository.repository.RedisUtils;
+import com.nannoq.tools.repository.repository.redis.RedisUtils;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpClientOptions;

@@ -28,7 +28,7 @@ package com.nannoq.tools.fcm.server;
 import com.google.common.net.MediaType;
 import com.nannoq.tools.cluster.apis.APIManager;
 import com.nannoq.tools.fcm.server.data.FcmDevice;
-import com.nannoq.tools.repository.repository.RedisUtils;
+import com.nannoq.tools.repository.repository.redis.RedisUtils;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;

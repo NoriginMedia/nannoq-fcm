@@ -27,7 +27,7 @@ package com.nannoq.tools.fcm.server;
 
 import com.nannoq.tools.fcm.server.messageutils.FcmNotification;
 import com.nannoq.tools.fcm.server.messageutils.GcmPacketExtension;
-import com.nannoq.tools.repository.repository.RedisUtils;
+import com.nannoq.tools.repository.repository.redis.RedisUtils;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
