@@ -51,7 +51,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 
 import static com.nannoq.tools.fcm.server.FcmServer.GCM_DEVICE_GROUP_HTTP_ENDPOINT_COMPLETE;
-import static com.nannoq.tools.fcm.server.MessageSender.JEDIS_MESSAGE_HASH;
+import static com.nannoq.tools.fcm.server.MessageSender.REDIS_MESSAGE_HASH;
 
 /**
  * This class handles reception of all messages received from the CCS and devices.
@@ -229,7 +229,7 @@ public class XMPPPacketListener implements PacketListener {
                 RedisTransaction transaction = redisClient.transaction();
 
                 transaction.multi(multiResult -> {
-                    transaction.hdel(JEDIS_MESSAGE_HASH, messageId, hDelResult -> {
+                    transaction.hdel(REDIS_MESSAGE_HASH, messageId, hDelResult -> {
                         if (hDelResult.failed()) {
                             logger.error("Could not remove message hash...");
                         }
@@ -324,7 +324,7 @@ public class XMPPPacketListener implements PacketListener {
     }
 
     private void sendReply(String messageId) {
-        RedisUtils.performJedisWithRetry(redisClient, redis -> redis.hget(JEDIS_MESSAGE_HASH, messageId, result -> {
+        RedisUtils.performJedisWithRetry(redisClient, redis -> redis.hget(REDIS_MESSAGE_HASH, messageId, result -> {
             if (result.failed()) {
                 logger.error("Unable to get map for message...");
             } else {

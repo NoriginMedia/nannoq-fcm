@@ -64,9 +64,6 @@ public class MessageSender {
     private static final String STATUS_CODE = "status";
     private static final String SUCCESS = "Success";
     private static final String FAILURE = "Failure";
-    private static final String USER_LIKES = "likes";
-    private static final String TOKENS = "tokens";
-    private static final String USER_INFO = "userInfo";
     private static final Integer ALREADY_EXISTS = 208;
     private static final Integer CREATED = 200;
     private static final Integer NO_CONTENT = 204;
@@ -85,8 +82,8 @@ public class MessageSender {
 
     private static final String GCM_DEVICE_REG_IDS_NOTATION = "registration_ids";
 
-    // jedis message hash
-    static final String JEDIS_MESSAGE_HASH = "MESSAGE_QUEUE";
+    // redis message hash
+    static final String REDIS_MESSAGE_HASH = "MESSAGE_QUEUE";
     private final FcmServer server;
     private RedisClient redisClient;
     private final ExecutorService delayedSendingService;
@@ -194,7 +191,7 @@ public class MessageSender {
     void send(String messageId, String jsonValue) {
         String retryKey = messageId + "_retry_count";
 
-        Consumer<RedisClient> sender = redis -> redis.hset(JEDIS_MESSAGE_HASH, messageId, jsonValue, hSetResult -> {
+        Consumer<RedisClient> sender = redis -> redis.hset(REDIS_MESSAGE_HASH, messageId, jsonValue, hSetResult -> {
             if (hSetResult.failed()) {
                 logger.error("HSET Failed for id:" + messageId);
             }
