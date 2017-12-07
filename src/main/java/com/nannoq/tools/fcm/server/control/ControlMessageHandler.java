@@ -25,7 +25,7 @@
 
 package com.nannoq.tools.fcm.server.control;
 
-import com.nannoq.tools.fcm.server.GcmServer;
+import com.nannoq.tools.fcm.server.FcmServer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -42,9 +42,9 @@ public class ControlMessageHandler {
     // control notations
     private static final String GCM_PACKET_CONTROL_TYPE_NOTATION = "control_type";
 
-    private final GcmServer server;
+    private final FcmServer server;
 
-    public ControlMessageHandler(GcmServer server) {
+    public ControlMessageHandler(FcmServer server) {
         this.server = server;
     }
 

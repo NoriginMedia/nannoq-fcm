@@ -25,7 +25,10 @@
 
 package com.nannoq.tools.fcm.server.data;
 
+import com.nannoq.tools.fcm.server.FcmServer;
+import com.nannoq.tools.fcm.server.MessageSender;
 import com.nannoq.tools.fcm.server.messageutils.CcsMessage;
+import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
@@ -104,4 +107,9 @@ public interface DataMessageHandler extends Handler<CcsMessage> {
     }
 
     RegistrationService getRegistrationService();
+
+    @Fluent
+    DataMessageHandler setServer(FcmServer server);
+    @Fluent
+    DataMessageHandler setSender(MessageSender sender);
 }

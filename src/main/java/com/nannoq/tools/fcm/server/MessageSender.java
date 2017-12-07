@@ -26,7 +26,7 @@
 package com.nannoq.tools.fcm.server;
 
 import com.nannoq.tools.fcm.server.messageutils.FcmNotification;
-import com.nannoq.tools.fcm.server.messageutils.GcmPacketExtension;
+import com.nannoq.tools.fcm.server.messageutils.FcmPacketExtension;
 import com.nannoq.tools.repository.repository.redis.RedisUtils;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
@@ -87,14 +87,17 @@ public class MessageSender {
 
     // jedis message hash
     static final String JEDIS_MESSAGE_HASH = "MESSAGE_QUEUE";
-    private final GcmServer server;
-    private final RedisClient redisClient;
+    private final FcmServer server;
+    private RedisClient redisClient;
     private final ExecutorService delayedSendingService;
 
-    MessageSender(GcmServer server, RedisClient redisClient) {
+    MessageSender(FcmServer server) {
         this.server = server;
-        this.redisClient = redisClient;
         delayedSendingService = Executors.newCachedThreadPool();
+    }
+
+    void setRedisClient(RedisClient redisClient) {
+        this.redisClient = redisClient;
     }
 
     public static JsonObject createJsonAck(String from, String messageId) {
@@ -196,7 +199,7 @@ public class MessageSender {
                 logger.error("HSET Failed for id:" + messageId);
             }
 
-            GcmPacketExtension extension = new GcmPacketExtension(jsonValue);
+            FcmPacketExtension extension = new FcmPacketExtension(jsonValue);
             Packet request = extension.toPacket();
 
             redis.get(retryKey, getResult -> {

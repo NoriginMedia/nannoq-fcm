@@ -25,6 +25,9 @@
 
 package com.nannoq.tools.fcm.server.data;
 
+import com.nannoq.tools.fcm.server.FcmServer;
+import com.nannoq.tools.fcm.server.MessageSender;
+import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
@@ -36,9 +39,17 @@ import org.jsoup.safety.Whitelist;
 public interface RegistrationService {
     Logger logger = LoggerFactory.getLogger(RegistrationService.class.getSimpleName());
 
-    void registerDevice(String appPackageName, String fcmId, JsonObject data);
-    void update(String appPackageName, String fcmId, JsonObject data);
-    void handleDeviceRemoval(String messageId, String registrationId, Handler<AsyncResult<FcmDevice>> resultHandler);
+    @Fluent
+    RegistrationService setServer(FcmServer server);
+    @Fluent
+    RegistrationService setSender(MessageSender sender);
+
+    @Fluent
+    RegistrationService registerDevice(String appPackageName, String fcmId, JsonObject data);
+    @Fluent
+    RegistrationService update(String appPackageName, String fcmId, JsonObject data);
+    @Fluent
+    RegistrationService handleDeviceRemoval(String messageId, String registrationId, Handler<AsyncResult<FcmDevice>> resultHandler);
 
     default String cleanData(String input) {
         if (input != null) return Jsoup.clean(input, Whitelist.basic());

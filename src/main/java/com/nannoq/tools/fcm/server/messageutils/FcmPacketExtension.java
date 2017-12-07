@@ -38,10 +38,10 @@ import static com.nannoq.tools.fcm.server.XMPPPacketListener.GCM_NAMESPACE;
  *
  * Sourced: https://github.com/writtmeyer/gcm_server/blob/master/src/com/grokkingandroid/sampleapp/samples/gcm/ccs/server/CcsClient.java
  */
-public class GcmPacketExtension extends DefaultPacketExtension {
+public class FcmPacketExtension extends DefaultPacketExtension {
     private final String json;
 
-    public GcmPacketExtension(String json) {
+    public FcmPacketExtension(String json) {
         super(GCM_ELEMENT_NAME, GCM_NAMESPACE);
         this.json = json;
     }

@@ -32,7 +32,7 @@ import com.nannoq.tools.fcm.server.data.DataMessageHandler;
 import com.nannoq.tools.fcm.server.data.FcmDevice;
 import com.nannoq.tools.fcm.server.data.RegistrationService;
 import com.nannoq.tools.fcm.server.messageutils.CcsMessage;
-import com.nannoq.tools.fcm.server.messageutils.GcmPacketExtension;
+import com.nannoq.tools.fcm.server.messageutils.FcmPacketExtension;
 import com.nannoq.tools.repository.repository.redis.RedisUtils;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -50,7 +50,7 @@ import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 
-import static com.nannoq.tools.fcm.server.GcmServer.GCM_DEVICE_GROUP_HTTP_ENDPOINT_COMPLETE;
+import static com.nannoq.tools.fcm.server.FcmServer.GCM_DEVICE_GROUP_HTTP_ENDPOINT_COMPLETE;
 import static com.nannoq.tools.fcm.server.MessageSender.JEDIS_MESSAGE_HASH;
 
 /**
@@ -99,7 +99,7 @@ public class XMPPPacketListener implements PacketListener {
     // gcm receipt codes
     private static final String GCM_RECEIPT_MESSAGE_DELIVERED_CODE = "MESSAGE_SENT_TO_DEVICE";
 
-    private final GcmServer server;
+    private final FcmServer server;
     private final MessageSender sender;
     private final RedisClient redisClient;
     private final DataMessageHandler dataMessageHandler;
@@ -107,7 +107,7 @@ public class XMPPPacketListener implements PacketListener {
     private final String GCM_SENDER_ID;
     private final String GCM_API_KEY;
 
-    XMPPPacketListener(GcmServer server,
+    XMPPPacketListener(FcmServer server,
                        RedisClient redisClient,
                        DataMessageHandler dataMessageHandler,
                        RegistrationService registrationService,
@@ -117,7 +117,8 @@ public class XMPPPacketListener implements PacketListener {
         this.registrationService = registrationService;
         this.GCM_SENDER_ID = GCM_SENDER_ID;
         this.GCM_API_KEY = GCM_API_KEY;
-        sender = new MessageSender(server, redisClient);
+        sender = new MessageSender(server);
+        sender.setRedisClient(redisClient);
         this.redisClient = redisClient;
     }
 
@@ -126,7 +127,7 @@ public class XMPPPacketListener implements PacketListener {
         logger.info("Packet received..");
 
         Message incomingMessage = (Message) packet;
-        GcmPacketExtension gcmPacket = (GcmPacketExtension) incomingMessage.getExtension(GCM_NAMESPACE);
+        FcmPacketExtension gcmPacket = (FcmPacketExtension) incomingMessage.getExtension(GCM_NAMESPACE);
         String json = gcmPacket.getJson();
 
         JsonObject jsonMap = new JsonObject(json);

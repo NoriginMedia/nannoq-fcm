@@ -28,7 +28,7 @@ package com.nannoq.tools.fcm.server;
 import com.nannoq.tools.fcm.server.data.DataMessageHandler;
 import com.nannoq.tools.fcm.server.data.RegistrationService;
 import com.nannoq.tools.fcm.server.messageutils.FcmNotification;
-import com.nannoq.tools.fcm.server.messageutils.GcmPacketExtension;
+import com.nannoq.tools.fcm.server.messageutils.FcmPacketExtension;
 import com.nannoq.tools.repository.repository.redis.RedisUtils;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.AbstractVerticle;
@@ -49,7 +49,7 @@ import static com.nannoq.tools.fcm.server.XMPPPacketListener.GCM_ELEMENT_NAME;
 import static com.nannoq.tools.fcm.server.XMPPPacketListener.GCM_NAMESPACE;
 
 /**
- * File: GcmServer
+ * File: FcmServer
  * Project: gcm-backend
  * Package: com.noriginmedia.norigintube.gcm.server
  * <p>
@@ -58,7 +58,7 @@ import static com.nannoq.tools.fcm.server.XMPPPacketListener.GCM_NAMESPACE;
  * @author anders
  * @version 3/30/16
  */
-public class GcmServer extends AbstractVerticle {
+public class FcmServer extends AbstractVerticle {
     private static final String GCM_ENDPOINT = "fcm-xmpp.googleapis.com";
     public static final String GCM_HTTP_ENDPOINT = "https://fcm.googleapis.com/fcm/send";
     public static final String GCM_DEVICE_GROUP_BASE = "android.googleapis.com";
@@ -66,7 +66,7 @@ public class GcmServer extends AbstractVerticle {
     public static final String GCM_DEVICE_GROUP_HTTP_ENDPOINT_COMPLETE =
             "https://" + GCM_DEVICE_GROUP_BASE + GCM_DEVICE_GROUP_HTTP_ENDPOINT;
 
-    private final Logger logger = LoggerFactory.getLogger(GcmServer.class.getSimpleName());
+    private final Logger logger = LoggerFactory.getLogger(FcmServer.class.getSimpleName());
 
     private String PACKAGE_NAME_BASE;
     private String GCM_SENDER_ID;
@@ -74,13 +74,13 @@ public class GcmServer extends AbstractVerticle {
 
     private final boolean dev;
     private final int GCM_PORT;
-    private final DataMessageHandler dataMessageHandler;
-    private final RegistrationService registrationService;
+    private MessageSender messageSender;
+    private DataMessageHandler dataMessageHandler;
+    private RegistrationService registrationService;
 
     private RedisClient redisClient;
 
     private ConnectionConfiguration connectionConfiguration;
-    private MessageSender administrativeMessageSender;
 
     private Connection primaryConnection;
     private Connection secondaryConnection;
@@ -89,47 +89,72 @@ public class GcmServer extends AbstractVerticle {
     private boolean primaryConnecting;
     private boolean secondaryConnecting;
 
-    private GcmServer(boolean dev, DataMessageHandler dataMessageHandler, RegistrationService registrationService) {
+    private FcmServer(boolean dev) {
         this.dev = dev;
         GCM_PORT = dev ? 5236 : 5235;
-        this.dataMessageHandler = dataMessageHandler;
-        this.registrationService = registrationService;
-        PACKAGE_NAME_BASE = config().getString("basePackageNameFcm");
-        GCM_SENDER_ID = config().getString("gcmSenderId");
-        GCM_API_KEY = config().getString("gcmApiKey");
     }
 
-    public class GcmServerBuilder {
+    public static class FcmServerBuilder {
         private boolean dev = false;
         private DataMessageHandler dataMessageHandler;
         private RegistrationService registrationService;
 
         @Fluent
-        public GcmServerBuilder withDev(boolean dev) {
+        public FcmServerBuilder withDev(boolean dev) {
             this.dev = dev;
             return this;
         }
 
         @Fluent
-        public GcmServerBuilder withDataMessageHandler(DataMessageHandler dataMessageHandler) {
+        public FcmServerBuilder withDataMessageHandler(DataMessageHandler dataMessageHandler) {
             this.dataMessageHandler = dataMessageHandler;
+
             return this;
         }
 
         @Fluent
-        public GcmServerBuilder withRegistrationService(RegistrationService registrationService) {
+        public FcmServerBuilder withRegistrationService(RegistrationService registrationService) {
             this.registrationService = registrationService;
+
             return this;
         }
 
-        public GcmServer build() {
-            return new GcmServer(dev, dataMessageHandler, registrationService);
+        public FcmServer build() {
+            FcmServer fcmServer = new FcmServer(dev);
+            MessageSender messageSender = new MessageSender(fcmServer);
+            dataMessageHandler.setServer(fcmServer);
+            registrationService.setServer(fcmServer);
+
+            dataMessageHandler.setSender(messageSender);
+            registrationService.setSender(messageSender);
+
+            fcmServer.setDataMessageHandler(dataMessageHandler);
+            fcmServer.setRegistrationService(registrationService);
+            fcmServer.setMessageSender(messageSender);
+
+            return fcmServer;
         }
+    }
+
+    private void setDataMessageHandler(DataMessageHandler dataMessageHandler) {
+        this.dataMessageHandler = dataMessageHandler;
+    }
+
+    private void setRegistrationService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+
+    private void setMessageSender(MessageSender messageSender) {
+        this.messageSender = messageSender;
     }
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         logger.info("Starting GCM Server: " + this);
+
+        PACKAGE_NAME_BASE = config().getString("basePackageNameFcm");
+        GCM_SENDER_ID = config().getString("gcmSenderId");
+        GCM_API_KEY = config().getString("gcmApiKey");
 
         JsonObject errors = new JsonObject();
 
@@ -141,7 +166,7 @@ public class GcmServer extends AbstractVerticle {
             vertx.executeBlocking(fut -> {
                 connectionConfiguration = new ConnectionConfiguration(GCM_ENDPOINT, GCM_PORT);
                 redisClient = RedisUtils.getRedisClient(vertx, config());
-                administrativeMessageSender = new MessageSender(this, redisClient);
+                this.messageSender.setRedisClient(redisClient);
                 setConfiguration();
 
                 try {
@@ -233,7 +258,7 @@ public class GcmServer extends AbstractVerticle {
         String appPackageName = packageNameExtension.equals("devApp") ? PACKAGE_NAME_BASE :
                 PACKAGE_NAME_BASE + "." + packageNameExtension;
 
-        administrativeMessageSender.send(MessageSender.createCustomNotification(appPackageName, to, notification));
+        messageSender.send(MessageSender.createCustomNotification(appPackageName, to, notification));
 
         logger.info("Passing notification to: " + to);
 
@@ -249,7 +274,7 @@ public class GcmServer extends AbstractVerticle {
         ProviderManager.getInstance().addExtensionProvider(GCM_ELEMENT_NAME, GCM_NAMESPACE,
                 (PacketExtensionProvider) parser -> {
                     String json = parser.nextText();
-                    return new GcmPacketExtension(json);
+                    return new FcmPacketExtension(json);
                 });
     }
 

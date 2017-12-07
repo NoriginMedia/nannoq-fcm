@@ -46,18 +46,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static com.nannoq.tools.fcm.server.GcmServer.GCM_DEVICE_GROUP_HTTP_ENDPOINT_COMPLETE;
+import static com.nannoq.tools.fcm.server.FcmServer.GCM_DEVICE_GROUP_HTTP_ENDPOINT_COMPLETE;
 
 public class DeviceGroupManager {
     private final Logger logger = LoggerFactory.getLogger(DeviceGroupManager.class.getSimpleName());
 
-    private final GcmServer server;
+    private final FcmServer server;
     private final MessageSender sender;
     private final RedisClient redisClient;
     private final String GCM_SENDER_ID;
     private final String GCM_API_KEY;
 
-    DeviceGroupManager(GcmServer server, MessageSender sender, RedisClient redisClient,
+    DeviceGroupManager(FcmServer server, MessageSender sender, RedisClient redisClient,
                        String GCM_SENDER_ID, String GCM_API_KEY) {
         this.server = server;
         this.sender = sender;
