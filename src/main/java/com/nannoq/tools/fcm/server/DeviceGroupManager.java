@@ -71,7 +71,7 @@ public class DeviceGroupManager {
     }
 
     public void addDeviceToDeviceGroupForUser(FcmDevice device, String appPackageName,
-                                               String channelKeyName, String fcmId) {
+                                              String channelKeyName, String fcmId) {
         addDeviceToDeviceGroup(device, channelKeyName, resultHandler -> {
             if (resultHandler.failed()) {
                 logger.error("Could not add device to device group...");
