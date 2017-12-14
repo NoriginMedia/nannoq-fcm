@@ -50,6 +50,10 @@ dependencies {
 }
 ```
 
+### Implementation and Use
+
+Please consult the [Wiki](https://github.com/mikand13/nannoq-fcm/wiki) for guides on implementations and use.
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://github.com/mikand13/nannoq-fcm/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
