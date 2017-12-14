@@ -20,44 +20,52 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package com.nannoq.tools.fcm.server.data;
+package com.nannoq.tools.fcm;
 
 import com.nannoq.tools.fcm.server.FcmServer;
 import com.nannoq.tools.fcm.server.MessageSender;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import com.nannoq.tools.fcm.server.data.DataMessageHandler;
+import com.nannoq.tools.fcm.server.data.RegistrationService;
+import com.nannoq.tools.fcm.server.messageutils.CcsMessage;
+import io.vertx.core.Future;
 
 /**
  * @author Anders Mikkelsen
  * @version 31.03.2016
  */
-public interface RegistrationService {
-    Logger logger = LoggerFactory.getLogger(RegistrationService.class.getSimpleName());
+public class DefaultDataMessageHandler implements DataMessageHandler {
+    private Future<CcsMessage> messageFuture;
 
-    @Fluent
-    RegistrationService setServer(FcmServer server);
-    @Fluent
-    RegistrationService setSender(MessageSender sender);
 
-    @Fluent
-    RegistrationService registerDevice(String appPackageName, String fcmId, JsonObject data);
-    @Fluent
-    RegistrationService update(String appPackageName, String fcmId, JsonObject data);
-    @Fluent
-    RegistrationService handleDeviceRemoval(String messageId, String registrationId, Handler<AsyncResult<FcmDevice>> resultHandler);
+    @Override
+    public void handleIncomingDataMessage(CcsMessage ccsMessage) {
+        if (messageFuture == null) throw new IllegalArgumentException("Preload a future before receiving messages!");
+        if (messageFuture.isComplete()) throw new IllegalStateException("This future is already complete!");
+        messageFuture.complete(ccsMessage);
+    }
 
-    default String cleanData(String input) {
-        if (input != null) return Jsoup.clean(input, Whitelist.basic());
-
+    @Override
+    public RegistrationService getRegistrationService() {
         return null;
+    }
+
+    @Override
+    public DataMessageHandler setServer(FcmServer server) {
+        return null;
+    }
+
+    @Override
+    public DataMessageHandler setSender(MessageSender sender) {
+        return null;
+    }
+
+    public Future<CcsMessage> getMessageFuture() {
+        return messageFuture;
+    }
+
+    public void setMessageFuture(Future<CcsMessage> messageFuture) {
+        this.messageFuture = messageFuture;
     }
 }

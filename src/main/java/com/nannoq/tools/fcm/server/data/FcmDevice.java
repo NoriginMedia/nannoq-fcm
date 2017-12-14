@@ -27,6 +27,10 @@ package com.nannoq.tools.fcm.server.data;
 
 import io.vertx.codegen.annotations.Fluent;
 
+/**
+ * @author Anders Mikkelsen
+ * @version 31.03.2016
+ */
 public interface FcmDevice {
     @Fluent
     FcmDevice setFcmId(String fcmId);

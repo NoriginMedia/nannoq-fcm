@@ -49,14 +49,8 @@ import static com.nannoq.tools.fcm.server.XMPPPacketListener.GCM_ELEMENT_NAME;
 import static com.nannoq.tools.fcm.server.XMPPPacketListener.GCM_NAMESPACE;
 
 /**
- * File: FcmServer
- * Project: gcm-backend
- * Package: com.noriginmedia.norigintube.gcm.server
- * <p>
- * This class
- *
- * @author anders
- * @version 3/30/16
+ * @author Anders Mikkelsen
+ * @version 31.03.2016
  */
 public class FcmServer extends AbstractVerticle {
     private static final String GCM_ENDPOINT = "fcm-xmpp.googleapis.com";
@@ -383,7 +377,19 @@ public class FcmServer extends AbstractVerticle {
         }
     }
 
-    RedisClient getJedisClient() {
+    RedisClient getRedisClient() {
         return redisClient;
+    }
+
+    public boolean isOnline() {
+        if (primaryConnection != null) {
+            return primaryConnection.isConnected() &&
+                    primaryConnection.isAuthenticated();
+        }
+
+        return secondaryConnection != null &&
+                secondaryConnection.isConnected() &&
+                secondaryConnection.isAuthenticated();
+
     }
 }

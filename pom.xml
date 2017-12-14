@@ -51,7 +51,10 @@
         <maven.javadoc.version>3.0.0-M1</maven.javadoc.version>
         <maven.compiler.version>3.7.0</maven.compiler.version>
         <maven.gpg.version>1.6</maven.gpg.version>
+        <maven.helper.version>3.0.0</maven.helper.version>
+        <maven.failsafe.version>2.20.1</maven.failsafe.version>
         <sonatype.staging>1.6.8</sonatype.staging>
+        <jackson.version>2.9.3</jackson.version>
     </properties>
 
     <dependencies>
@@ -184,6 +187,40 @@
         </dependency>
 
         <!-- Sanitation -->
+
+        <!-- Jackson -->
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Jackson -->
+
+        <!-- Testing -->
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.kstyrc</groupId>
+            <artifactId>embedded-redis</artifactId>
+            <version>0.6</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testing -->
     </dependencies>
 
     <distributionManagement>
@@ -195,6 +232,29 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${maven.helper.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>redisPort</id>
+                        <phase>pre-integration-test</phase>
+
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+
+                        <configuration>
+                            <portNames>
+                                <portName>redis.port</portName>
+                            </portNames>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>${maven.sources.version}</version>
@@ -286,6 +346,27 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven.failsafe.version}</version>
+
+                <configuration>
+                    <systemPropertyVariables>
+                        <redis.endpoint>localhost</redis.endpoint>
+                        <redis.port>${redis.port}</redis.port>
+                    </systemPropertyVariables>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

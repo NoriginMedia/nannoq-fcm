@@ -29,6 +29,10 @@ import io.vertx.codegen.annotations.Fluent;
 
 import java.util.Map;
 
+/**
+ * @author Anders Mikkelsen
+ * @version 31.03.2016
+ */
 public interface FcmNotification {
     Map<String, String> getData();
     Map<String, String> getNotification();

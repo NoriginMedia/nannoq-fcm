@@ -31,6 +31,9 @@ import io.vertx.core.json.JsonObject;
  * Represents a message for CCS based massaging.
  *
  * Sourced from: https://github.com/writtmeyer/gcm_server/blob/master/src/com/grokkingandroid/sampleapp/samples/gcm/ccs/server/CcsMessage.java
+ *
+ * @author Anders Mikkelsen
+ * @version 31.03.2016
  */
 public class CcsMessage {
     public static final String GCM_CONFIGURATION_NOTATION = "configuration";

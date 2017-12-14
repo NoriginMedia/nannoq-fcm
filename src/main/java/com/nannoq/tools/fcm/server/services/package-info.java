@@ -24,7 +24,8 @@
  */
 
 /**
- * Created by anders on 28/12/2016.
+ * @author Anders Mikkelsen
+ * @version 31.03.2016
  */
 @ModuleGen(name = "nannoqServicesGcm", groupPackage="com.nannoq.tools.fcm.server.services")
 package com.nannoq.tools.fcm.server.services;

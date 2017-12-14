@@ -37,6 +37,9 @@ import static com.nannoq.tools.fcm.server.XMPPPacketListener.GCM_NAMESPACE;
  * XMPP Packet Extension for GCM Cloud Connection Server.
  *
  * Sourced: https://github.com/writtmeyer/gcm_server/blob/master/src/com/grokkingandroid/sampleapp/samples/gcm/ccs/server/CcsClient.java
+ *
+ * @author Anders Mikkelsen
+ * @version 31.03.2016
  */
 public class FcmPacketExtension extends DefaultPacketExtension {
     private final String json;

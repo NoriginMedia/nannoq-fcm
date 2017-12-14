@@ -36,7 +36,8 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
 /**
- * Created by anders on 29/12/2016.
+ * @author Anders Mikkelsen
+ * @version 31.03.2016
  */
 @ProxyGen
 @VertxGen

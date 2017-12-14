@@ -48,6 +48,10 @@ import java.util.function.Consumer;
 
 import static com.nannoq.tools.fcm.server.FcmServer.GCM_DEVICE_GROUP_HTTP_ENDPOINT_COMPLETE;
 
+/**
+ * @author Anders Mikkelsen
+ * @version 31.03.2016
+ */
 public class DeviceGroupManager {
     private final Logger logger = LoggerFactory.getLogger(DeviceGroupManager.class.getSimpleName());
 
