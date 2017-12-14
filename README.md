@@ -2,6 +2,12 @@
 
 nannoq-fcm is a XMPP server implementation for use with Firebase Cloud Messaging with all features, for a Vert.x environment.
 
+It supports:
+ - Topics
+ - Direct Messages (Down and Upstream)
+ - Device Groups
+ - Device Registrations
+
 ### Prerequisites
 
 Vert.x >= 3.5.0
@@ -9,6 +15,8 @@ Vert.x >= 3.5.0
 Java >= 1.8
 
 Maven
+
+Redis
 
 ## Installing
 
@@ -26,7 +34,7 @@ mvn clean verify -Dgpg.skip=true
 
 First install with either Maven:
 
-```
+```xml
 <dependency>
     <groupId>com.nannoq</groupId>
     <artifactId>fcm</artifactId>
@@ -36,7 +44,7 @@ First install with either Maven:
 
 or Gradle:
 
-```
+```groovy
 dependencies {
     compile group: 'nannoq.com:fcm:1.0.0'
 }
