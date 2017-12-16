@@ -22,24 +22,45 @@
  * SOFTWARE.
  */
 
-package com.nannoq.tools.fcm;
+package com.nannoq.tools.fcm.server.data;
 
 import com.nannoq.tools.fcm.server.FcmServer;
 import com.nannoq.tools.fcm.server.MessageSender;
-import com.nannoq.tools.fcm.server.data.FcmDevice;
-import com.nannoq.tools.fcm.server.data.RegistrationService;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import io.vertx.core.json.JsonObject;
+import com.nannoq.tools.fcm.server.messageutils.CcsMessage;
 
 /**
+ * This class handles various scenarios for data messages retrieved from devices.
+ *
  * @author Anders Mikkelsen
  * @version 31.03.2016
  */
-public class FcmCreator {
-    public static FcmServer createFcm(DefaultDataMessageHandler defaultDataMessageHandler) {
-        return new FcmServer.FcmServerBuilder()
-                .withDataMessageHandler(defaultDataMessageHandler)
-                .build();
+public class DefaultDataMessageHandlerImpl implements DataMessageHandler {
+    private RegistrationService registrationService;
+
+    public DefaultDataMessageHandlerImpl() {
+        this(new DefaultRegistrationServiceImpl());
+    }
+
+    public DefaultDataMessageHandlerImpl(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+
+    @Override
+    public void handleIncomingDataMessage(CcsMessage ccsMessage) {
+    }
+
+    @Override
+    public RegistrationService getRegistrationService() {
+        return registrationService;
+    }
+
+    @Override
+    public DataMessageHandler setServer(FcmServer server) {
+        return this;
+    }
+
+    @Override
+    public DataMessageHandler setSender(MessageSender sender) {
+        return this;
     }
 }

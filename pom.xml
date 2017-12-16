@@ -16,7 +16,7 @@
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A collection of classes for managing connections and interactions with
         Firebase Cloud Messaging on Vert.x</description>
-    <url>https://github.com/AspiroTV/nannoq-fcm</url>
+    <url>https://github.com/NoriginMedia/nannoq-fcm</url>
 
     <licenses>
         <license>
@@ -35,9 +35,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/AspiroTV/nannoq-fcm.git</connection>
-        <developerConnection>scm:git:ssh://github.com:AspiroTV/nannoq-fcm.git</developerConnection>
-        <url>https://github.com/mikand13/nannoq-fcm/tree/master</url>
+        <connection>scm:git:git://github.com/NoriginMedia/nannoq-fcm.git</connection>
+        <developerConnection>scm:git:ssh://github.com:NoriginMedia/nannoq-fcm.git</developerConnection>
+        <url>https://github.com/NoriginMedia/nannoq-fcm/tree/master</url>
     </scm>
 
     <properties>

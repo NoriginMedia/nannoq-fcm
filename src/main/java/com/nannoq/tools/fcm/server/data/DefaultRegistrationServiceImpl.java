@@ -22,24 +22,43 @@
  * SOFTWARE.
  */
 
-package com.nannoq.tools.fcm;
+package com.nannoq.tools.fcm.server.data;
 
 import com.nannoq.tools.fcm.server.FcmServer;
 import com.nannoq.tools.fcm.server.MessageSender;
-import com.nannoq.tools.fcm.server.data.FcmDevice;
-import com.nannoq.tools.fcm.server.data.RegistrationService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
 /**
+ * This class handles various scenarios for data messages retrieved from devices.
+ *
  * @author Anders Mikkelsen
  * @version 31.03.2016
  */
-public class FcmCreator {
-    public static FcmServer createFcm(DefaultDataMessageHandler defaultDataMessageHandler) {
-        return new FcmServer.FcmServerBuilder()
-                .withDataMessageHandler(defaultDataMessageHandler)
-                .build();
+public class DefaultRegistrationServiceImpl implements RegistrationService {
+    @Override
+    public RegistrationService setServer(FcmServer server) {
+        return this;
+    }
+
+    @Override
+    public RegistrationService setSender(MessageSender sender) {
+        return this;
+    }
+
+    @Override
+    public RegistrationService registerDevice(String appPackageName, String fcmId, JsonObject data) {
+        return this;
+    }
+
+    @Override
+    public RegistrationService update(String appPackageName, String fcmId, JsonObject data) {
+        return this;
+    }
+
+    @Override
+    public RegistrationService handleDeviceRemoval(String messageId, String registrationId, Handler<AsyncResult<FcmDevice>> resultHandler) {
+        return this;
     }
 }

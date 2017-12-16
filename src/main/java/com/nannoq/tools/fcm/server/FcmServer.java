@@ -26,6 +26,8 @@
 package com.nannoq.tools.fcm.server;
 
 import com.nannoq.tools.fcm.server.data.DataMessageHandler;
+import com.nannoq.tools.fcm.server.data.DefaultDataMessageHandlerImpl;
+import com.nannoq.tools.fcm.server.data.DefaultRegistrationServiceImpl;
 import com.nannoq.tools.fcm.server.data.RegistrationService;
 import com.nannoq.tools.fcm.server.messageutils.FcmNotification;
 import com.nannoq.tools.fcm.server.messageutils.FcmPacketExtension;
@@ -116,6 +118,8 @@ public class FcmServer extends AbstractVerticle {
         public FcmServer build() {
             FcmServer fcmServer = new FcmServer(dev);
             MessageSender messageSender = new MessageSender(fcmServer);
+            if (dataMessageHandler == null) dataMessageHandler = new DefaultDataMessageHandlerImpl();
+            if (registrationService == null) registrationService = new DefaultRegistrationServiceImpl();
             dataMessageHandler.setServer(fcmServer);
             registrationService.setServer(fcmServer);
 
