@@ -25,12 +25,6 @@
 package com.nannoq.tools.fcm;
 
 import com.nannoq.tools.fcm.server.FcmServer;
-import com.nannoq.tools.fcm.server.MessageSender;
-import com.nannoq.tools.fcm.server.data.FcmDevice;
-import com.nannoq.tools.fcm.server.data.RegistrationService;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import io.vertx.core.json.JsonObject;
 
 /**
  * @author Anders Mikkelsen
