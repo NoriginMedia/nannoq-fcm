@@ -7,11 +7,7 @@
     <parent>
         <groupId>com.nannoq</groupId>
         <artifactId>tools</artifactId>
-<<<<<<< HEAD
-        <version>1.0.0</version>
-=======
-        <version>1.0.1-SNAPSHOT</version>
->>>>>>> develop
+        <version>1.0.1</version>
     </parent>
 
     <artifactId>fcm</artifactId>
