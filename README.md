@@ -1,5 +1,7 @@
 # Nannoq FCM
 
+[![Build Status](https://www.tomrom.net/buildStatus/icon?job=nannoq-fcm/develop)](https://www.tomrom.net/job/nannoq-fcm/job/develop/)
+
 nannoq-fcm is a XMPP server implementation for use with Firebase Cloud Messaging with all features, for a Vert.x environment.
 
 It supports:
@@ -35,18 +37,40 @@ mvn clean verify -Dgpg.skip=true
 First install with either Maven:
 
 ```xml
+<repositories>
+    <repository>
+        <id>ossrh</id>
+        <name>OSSRH Snapshots</name>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+        </snapshots>
+    </repository>
+</repositories>
+
 <dependency>
     <groupId>com.nannoq</groupId>
     <artifactId>fcm</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
 </dependency>
 ```
 
 or Gradle:
 
 ```groovy
+repositories {
+    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
-    compile group: 'nannoq.com:fcm:1.0.1'
+    compile group: 'nannoq.com:fcm:1.0.2-SNAPSHOT'
 }
 ```
 
