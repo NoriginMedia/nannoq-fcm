@@ -40,7 +40,7 @@ First install with either Maven:
 <dependency>
     <groupId>com.nannoq</groupId>
     <artifactId>fcm</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
@@ -48,7 +48,7 @@ or Gradle:
 
 ```groovy
 dependencies {
-    compile group: 'nannoq.com:fcm:1.0.4’
+    compile group: 'nannoq.com:fcm:1.0.5’
 }
 ```
 
